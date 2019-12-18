@@ -3,6 +3,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Starter Kit For Ethereum
 Basic Configuration For A Full Stack Dapp
 
+## Clone
+* git clone git remote add origin https://github.com/GoodnessEzeokafor/ethereum-starter-kit.git  name_of_folder
+
 ## Available Scripts
 
 In the project directory, you can run:
