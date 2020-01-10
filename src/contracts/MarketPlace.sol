@@ -41,6 +41,8 @@ contract MarketPlace{
     mapping (uint=>Buyer) public buyers;
     mapping (uint=>TransportCompany) public transport_companies;
     mapping (uint=>Product) public products;
+    mapping (uint=>Trace) public tracing;
+    
 
 
     /* START STRUCT  */
@@ -70,6 +72,9 @@ contract MarketPlace{
         string transport_name;
         string transport_description;
         string picture;       
+        string transport_address;
+        address payable transport_wallet_address;
+        uint price ; 
     }
 
 
@@ -86,8 +91,10 @@ contract MarketPlace{
 
     struct Trace{
         uint id;
-        uint product_id;
-        uint transport_company_id;
+        uint price_id;
+        string  product_name;
+        uint product_price;
+        // uint transport_company_id;
         bool left;
         bool arrived;
         bool pending; 
@@ -131,7 +138,9 @@ contract MarketPlace{
     event TraceCreated(
         uint id,
         uint product_id,
-        uint transport_company_id,
+        string  product_name,
+        uint product_price,
+        // uint transport_company_id,
         bool left,
         bool arrived,
         bool pending,
@@ -142,8 +151,12 @@ contract MarketPlace{
         uint id,
         string transport_name,
         string transport_description,
-        string picture  
+        string picture,
+        string transport_address,
+        address transport_wallet_address,
+        uint price  
     );
+    event BoughtProduct(address _from,address _to,uint amt);
     /* END EVENT */
     /* START METHOD */
     function createSellerProfile(
@@ -201,8 +214,57 @@ contract MarketPlace{
         );
     }
 
+    function createTransportCompany(
+        string memory _transport_name,
+        string memory _transport_description,
+        string memory _picture,
+        string memory _transport_address,
+        uint  _price
+    )public{
+        transportCompanyCount++;
+        transport_companies[transportCompanyCount] = TransportCompany(
+            transportCompanyCount,
+            _transport_name,
+            _transport_description,
+            _picture,
+            _transport_address,
+            msg.sender,
+            _price
+        );
+    }
 
-    
+    function createTrace(
+        uint _product_id,
+        string memory transport_name
+    )public{
+        traceCount++;
+        Product memory product = products[_product_id];
+        tracing[traceCount] = Trace(
+            traceCount,
+            product.id,
+            product.product_name,
+            product.product_price,
+            false,
+            false,
+            true,
+            now,
+            0
+        );
+    }
+        // uint price_id;
+        // string  product_name;
+        // uint product_price;
+
+        //     uint id;
+        // uint product_id;
+        // uint transport_company_id;
+        // bool left;
+        // bool arrived;
+        // bool pending; 
+        // uint timestamp;
+        // uint updated;
+
+
     /* END METHOD */
     
 
